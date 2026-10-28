@@ -129,6 +129,44 @@ revisados, por lo que no deben asumirse garantizadas por la base de datos:
 - Que existan permisos diferentes según rol.
 - Que el monto calculado quede guardado, se facture o se cobre.
 
+## 8. Capa complementaria de lógica PL/SQL
+
+La capa complementaria se separa en scripts por tipo de objeto:
+
+- `proyecto_parkcontrol/package.sql`: especificación y body del package
+  `PARKCONTROL_PKG`.
+- `proyecto_parkcontrol/procedimiento.sql`: procedimientos de finalización
+  de ingreso y sincronización de estados.
+- `proyecto_parkcontrol/funcion.sql`: funciones de cobro estimado y
+  porcentaje de ocupación.
+- `proyecto_parkcontrol/bitacora.sql`: tabla auxiliar y secuencia de bitácora
+  (complemento opcional).
+- `proyecto_parkcontrol/trigger_bitacora.sql`: trigger de sentencia para
+  registrar DML sobre `INGRESO` (complemento opcional).
+- `proyecto_parkcontrol/instalar_bitacora.sql`: instalador opcional de ambos
+  objetos de auditoría.
+- `proyecto_parkcontrol/logica_negocio.sql`: instalador que ejecuta los
+  scripts principales requeridos, incluido el trigger de control de
+  `trigger.sql`; no instala la bitácora opcional.
+
+La lógica permite consultar el cobro estimado, liquidar un ingreso al momento
+de la salida, calcular la ocupación global y sincronizar el estado de las
+filas. El cobro reutiliza los tramos y tarifas del reporte; no se almacena
+como pago porque el modelo no contiene una entidad de cobros.
+
+Como complemento opcional, `instalar_bitacora.sql` agrega
+`parkcontrol_bitacora` y `trg_ingreso_bitacora_stmt` para registrar una entrada
+por sentencia DML sobre `ingreso`. La bitácora es transaccional: se confirma
+o revierte junto con la sentencia que la genera. No se altera la estructura
+de las tablas existentes. El trigger compound `trg_ingreso_control_fila` en
+`trigger.sql` conserva el control de capacidad a nivel de fila y sentencia.
+
+Orden de ejecución: `Park_Control.sql` y después `logica_negocio.sql` (usando
+Run Script/F5 en SQL Developer o SQLcl). El instalador principal ejecuta
+`trigger.sql` antes de compilar el package. Para habilitar la auditoría
+adicional, ejecutar opcionalmente `instalar_bitacora.sql` después de los
+scripts principales.
+
 ## Fuentes revisadas
 
 - `proyecto_parkcontrol/Park_Control.sql`: tablas, restricciones y datos de
@@ -137,3 +175,7 @@ revisados, por lo que no deben asumirse garantizadas por la base de datos:
   del estado de filas.
 - `proyecto_parkcontrol/desarrollo.sql`: reporte de ocupación, cálculo de
   estadía, tarifas y estado de regreso.
+- `proyecto_parkcontrol/logica_negocio.sql` y scripts incluidos: API
+  complementaria, liquidación, ocupación y sincronización.
+- `proyecto_parkcontrol/instalar_bitacora.sql` y scripts incluidos:
+  auditoría transaccional opcional.
