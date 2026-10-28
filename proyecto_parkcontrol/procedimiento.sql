@@ -35,13 +35,13 @@ BEGIN
     IF v_id_ingreso IS NULL THEN
         RAISE_APPLICATION_ERROR(
             -20024,
-            'No hay ingresos activos para probar PR_FINALIZAR_INGRESO.'
+            'No hay ingresos activos para probar.'
         );
     END IF;
 
     pr_finalizar_ingreso(v_id_ingreso, v_total);
     DBMS_OUTPUT.PUT_LINE(
-        'Prueba PR_FINALIZAR_INGRESO correcta. Ingreso: ' ||
+        'Prueba correcta. Ingreso: ' ||
         v_id_ingreso || ' | Total: $' || TO_CHAR(v_total)
     );
 EXCEPTION
@@ -72,7 +72,7 @@ SAVEPOINT prueba_sincronizar_filas;
 BEGIN
     pr_sincronizar_estados_fila;
     DBMS_OUTPUT.PUT_LINE(
-        'Prueba PR_SINCRONIZAR_ESTADOS_FILA correcta.'
+        'Prueba correcta.'
     );
 EXCEPTION
     WHEN OTHERS THEN
