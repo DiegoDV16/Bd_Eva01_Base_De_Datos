@@ -44,9 +44,9 @@ END fn_parkcontrol_ocupacion;
 SELECT i.idIngreso AS id_ingreso,
        v.patente AS patente,
        tv.tipoVehiculo AS tipo_vehiculo,
-       TO_CHAR(
+       '$' || TO_CHAR(
            fn_parkcontrol_cobro(i.idIngreso),
-           'FM"$"999G999G999G990D00',
+           'FM999G999G999G990D00',
            'NLS_NUMERIC_CHARACTERS = '',.'''
        ) AS cobro_estimado
 FROM ingreso i

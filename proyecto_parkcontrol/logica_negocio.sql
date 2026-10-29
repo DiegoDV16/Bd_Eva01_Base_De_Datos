@@ -5,9 +5,12 @@
 -- La bitacora es opcional; instalarla por separado con instalar_bitacora.sql.
 -- Las instrucciones @@ resuelven los archivos desde esta misma carpeta.
 
-SET SERVEROUTPUT ON SIZE UNLIMITED;
 
+SET SERVEROUTPUT ON SIZE UNLIMITED;
+@@trigger_bitacora.sql
 @@trigger.sql
 @@package.sql
 @@procedimiento.sql
 @@funcion.sql
+
+
