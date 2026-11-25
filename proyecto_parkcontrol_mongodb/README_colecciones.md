@@ -18,7 +18,7 @@ Base: `parkcontrol` · Colección: `ingresos` · Script:
 | `$in` / `$all` / `$nin` | filtros por `etiquetas` y `tipo_cliente` |
 | `$or` | SUV o monto alto |
 | Subdocumentos en consulta | `vehiculo.tipo`, `cliente.nombres` |
-| Proyección con `_id: 0` | consulta de SUV |
+| Proyección (solo 4 campos) | consulta de SUV |
 | `sort()` y `limit()` | los 3 montos más altos |
 | `distinct()` | marcas distintas |
 | `updateOne` / `updateMany` | estado y montos |
@@ -99,7 +99,7 @@ caso del estacionamiento:
 | Listar fichas con lavado o de flota | administración | `$in` / `$all` |
 | Informe de clientes ocasionales | administración | `$nin` |
 | Ver los SUV del patio | guardia | `$or` |
-| Listado compacto: patente, marca y monto | guardia | proyección `_id: 0` |
+| Listado compacto: patente, marca y monto | guardia | proyección de 4 campos |
 | Los 3 cobros más altos del turno | caja | `sort` + `limit` |
 | Qué marcas hay hoy en el patio | supervisor | `distinct` |
 | El cliente retira el auto | recepción | `$set` |
@@ -113,7 +113,7 @@ caso del estacionamiento:
 1. `db.ingresos.find()` → mostrar la ficha completa.
 2. `find({ "monto_total": { $gte: 15000, $lte: 30000 } })` → rango.
 3. `find({ "etiquetas": { $all: ["lavado", "prioritario"] } })` → arreglo.
-4. La consulta con proyección → "solo muestro 4 campos, sin `_id`".
+4. La consulta con proyección → "solo muestro 4 campos".
 5. `updateOne` con `$set` → cambiar estado; volver a `find` para mostrarlo.
 6. `deleteMany` → borrar canceladas; `find` final.
 

@@ -198,12 +198,11 @@ db.ingresos.find({
   ]
 });
 
-// Caso: listado compacto para el guardia: patente, marca y monto,
-// sin _id y sin el resto del documento.
+// Caso: listado compacto para el guardia: patente, marca y monto.
 use('parkcontrol')
 db.ingresos.find(
   { "vehiculo.tipo": "suv" },
-  { "_id": 0, "codigo_ficha": 1, "cliente.nombres": 1, "vehiculo.marca": 1, "monto_total": 1 }
+  { "codigo_ficha": 1, "cliente.nombres": 1, "vehiculo.marca": 1, "monto_total": 1 }
 );
 
 // Caso: cierre de caja: los 3 cobros más altos del turno.
