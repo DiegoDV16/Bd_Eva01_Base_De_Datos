@@ -3,7 +3,8 @@ use('parkcontrol');
 db.ingresos.insertMany([
   {
     "nombres": "Diego Andrés",
-    "apellidos": "Soto Barría",
+    "apellido_paterno": "Soto",
+    "apellido_materno": "Barría",
     "rut": "20.111.111-1",
     "fecha_inicio": new Date(),
     "fecha_Regreso": new Date("2026-11-25T18:00:00-03:00"),
@@ -19,16 +20,20 @@ db.ingresos.insertMany([
             "https://dañ.5.com"
             ],
 
-    "servicio_extra": {
+    "servicio_extra": [
+        {
         "tipo_servicio": "lavado y aspirado",
         "valor": 25000
-    },
+    }
+    ],
     "observaciones": "cliente se llevo la llave"
     
   },
   {
     "nombres": "Vicente Javier",
-    "apellidos": "Hernández Pardo",
+    "apellido_paterno": "Hernández",
+    "apellido_materno": "Pardo",
+    "tipo_cliente": "Mensual",
     "rut": "20.222.222-2",
     "fecha_inicio": new Date(),
     "marca": "Honda",
