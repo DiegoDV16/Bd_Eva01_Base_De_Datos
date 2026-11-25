@@ -167,23 +167,30 @@ db.ingresos.insertMany([
 // ============================================================
 
 // Caso: la recepción abre la lista completa de fichas del turno.
+use('parkcontrol')
 db.ingresos.find();
 
 // Caso: el supervisor revisa solo a los abonados mensuales.
+use('parkcontrol')
 db.ingresos.find({ "tipo_cliente": "mensual" });
 
 // Caso: caja busca los cobros del día entre $15.000 y $30.000.
+use('parkcontrol')
 db.ingresos.find({ "monto_total": { $gte: 15000, $lte: 30000 } });
 
 // Caso: fichas con lavado o de flota ($in) y fichas que tienen
 // lavado y además son prioritarias ($all).
+use('parkcontrol')
 db.ingresos.find({ "etiquetas": { $in: ["lavado", "flota"] } });
+use('parkcontrol')
 db.ingresos.find({ "etiquetas": { $all: ["lavado", "prioritario"] } });
 
 // Caso: informe de ocasionales (todas las fichas que NO son mensuales).
+use('parkcontrol')
 db.ingresos.find({ "tipo_cliente": { $nin: ["mensual"] } });
 
 // Caso: vehículos grandes del patio: SUV o cobros sobre $50.000.
+use('parkcontrol')
 db.ingresos.find({
   $or: [
     { "vehiculo.tipo": "suv" },
@@ -193,15 +200,18 @@ db.ingresos.find({
 
 // Caso: listado compacto para el guardia: patente, marca y monto,
 // sin _id y sin el resto del documento.
+use('parkcontrol')
 db.ingresos.find(
   { "vehiculo.tipo": "suv" },
   { "_id": 0, "codigo_ficha": 1, "cliente.nombres": 1, "vehiculo.marca": 1, "monto_total": 1 }
 );
 
 // Caso: cierre de caja: los 3 cobros más altos del turno.
+use('parkcontrol')
 db.ingresos.find().sort({ "monto_total": -1 }).limit(3);
 
 // Caso: qué marcas de autos hay hoy en el patio.
+use('parkcontrol')
 db.ingresos.distinct("vehiculo.marca");
 
 // ============================================================
@@ -209,12 +219,14 @@ db.ingresos.distinct("vehiculo.marca");
 // ============================================================
 
 // Caso: el cliente retira su auto; la ficha pasa a finalizada.
+use('parkcontrol')
 db.ingresos.updateOne(
   { "codigo_ficha": "ING-0001" },
   { $set: { "estado": "finalizado" } }
 );
 
 // Caso: ajuste de tarifa: recargo de $2.000 a todos los mensuales.
+use('parkcontrol')
 db.ingresos.updateMany(
   { "tipo_cliente": "mensual" },
   { $inc: { "monto_total": 2000 } }
@@ -222,6 +234,7 @@ db.ingresos.updateMany(
 
 // Caso: se corrige una salida mal registrada en una ficha mensual
 // y se borra la fecha de salida.
+use('parkcontrol')
 db.ingresos.updateOne(
   { "codigo_ficha": "ING-0002" },
   { $unset: { "fecha_salida": "" } }
@@ -232,10 +245,13 @@ db.ingresos.updateOne(
 // ============================================================
 
 // Caso: se anula una ficha cargada por error.
+use('parkcontrol')
 db.ingresos.deleteOne({ "codigo_ficha": "ING-0008" });
 
 // Caso: limpieza de fin de turno: se borran las fichas canceladas.
+use('parkcontrol')
 db.ingresos.deleteMany({ "estado": "cancelado" });
 
 // Quedan 6 fichas activas o finalizadas
+use('parkcontrol')
 db.ingresos.find();
